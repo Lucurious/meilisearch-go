@@ -27,6 +27,12 @@ type IndexManager interface {
 	// UpdateIndexWithContext updates the primary key of the index using the provided context for cancellation.
 	UpdateIndexWithContext(ctx context.Context, params *UpdateIndexRequestParams) (*TaskInfo, error)
 
+	// CompactIndex compacts the index, optimizing it's size and speed
+	CompactIndex() (*TaskInfo, error)
+
+	// CompactIndexWithContext compacts the index, optimizing it's size and speed, using the provided context for cancellation.
+	CompactIndexWithContext(ctx context.Context) (*TaskInfo, error)
+	
 	// Delete removes the index identified by the given UID.
 	Delete(uid string) (bool, error)
 
