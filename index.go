@@ -116,6 +116,29 @@ func (i *index) UpdateIndexWithContext(ctx context.Context, params *UpdateIndexR
 	return resp, nil
 }
 
+func (i *index) CompactIndex() (*TaskInfo, error) {
+	return i.CompactIndexWithContext(context.Background())
+}
+
+func (i *index) CompactIndexWithContext(ctx context.Context) (*TaskInfo, error) {
+	resp := new(TaskInfo)
+
+	req := &internalRequest{
+		endpoint:            "/indexes/" + i.uid + "/compact",
+		method:              http.MethodPost,
+		withRequest:         nil,
+		withResponse:        resp,
+		acceptedStatusCodes: []int{http.StatusAccepted},
+		functionName:        "CompactIndex",
+	}
+
+	if err := i.client.executeRequest(ctx, req); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 func (i *index) Delete(uid string) (bool, error) {
 	return i.DeleteWithContext(context.Background(), uid)
 }
